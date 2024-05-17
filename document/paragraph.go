@@ -290,3 +290,42 @@ func (p Paragraph) GetAllParagraphText(paragraph Paragraph) (text string) {
 	}
 	return
 }
+
+// CopyRun duplicates the given run and adds it to the paragraph.
+func (p Paragraph) CopyRun(run Run) Run {
+	// Create paragraph content
+	paragraphContent := wml.NewEG_PContent()
+	p.x.EG_PContent = append(p.x.EG_PContent, paragraphContent)
+
+	// Create content run content
+	contentRunContent := wml.NewEG_ContentRunContent()
+	paragraphContent.EG_ContentRunContent = append(paragraphContent.EG_ContentRunContent, contentRunContent)
+
+	// Create a new run
+	newRun := wml.NewCT_R()
+
+	// If the original run has run properties, copy them
+	if run.x.RPr != nil {
+		newRPr := cloneRPr(run.x.RPr)
+		newRun.RPr = newRPr
+	}
+
+	// Assign the new run to the content run content
+	contentRunContent.R = newRun
+
+	return Run{p.d, newRun}
+}
+
+// cloneRPr clones the run properties.
+func cloneRPr(rPr *wml.CT_RPr) *wml.CT_RPr {
+	// If the run properties are nil, return nil
+	if rPr == nil {
+		return nil
+	}
+
+	// Create new run properties and copy the values from the original run properties to the new run properties
+	clonedRPr := wml.NewCT_RPr()
+	*clonedRPr = *rPr // Copy the struct rather than the pointer
+
+	return clonedRPr
+}
