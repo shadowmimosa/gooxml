@@ -16,9 +16,10 @@ import (
 
 	"github.com/qifengzhang007/gooxml/measurement"
 	// Add image format support
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
+	// It's temporarily useless and takes three times as long
+	//_ "image/gif"
+	//_ "image/jpeg"
+	//_ "image/png"
 )
 
 // Image is a container for image information. It's used as we need format and
